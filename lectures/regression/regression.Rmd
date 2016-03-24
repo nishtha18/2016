@@ -44,6 +44,10 @@ which in this cases is:
 
 ```{r}
 father.son %>% summarize(cor(fheight, sheight))
+father.son %>% summarize(cor(sheight, fheight))
+
+father.son %>% 
+
 ```
 
 The correlation of a list of pairs $(x_1, y_1), \dots , (x_n, y_n)$ is defined as
@@ -95,12 +99,38 @@ As in illustration let's assume that the 1,078 pairs of fathers and sons is our 
 
 The following is a random variable.
 ```{r}
-R <- sample_n( father.son, 100) %>% summarize(cor(fheight, sheight))
+R <- (sample_n( father.son, 100) %>% summarize(cor(fheight, sheight)))[1,]
+R
+
+sample_n( father.son, 100) %>% summarize(n())
 ```
 
 ###Assessment: 
 
 Use a Monte Carlo simulation to learn the distribution of the difference between `R` and the actual correlation. What is the SE of `R`? What is the distribution?
+
+```{r}
+B <- 10^4
+class(R[1,])
+X <- replicate(B, (sample_n( father.son, 25) %>% summarize(cor(fheight, sheight)))[1,] )
+mean(X)
+sd(X)
+father.son %>% summarize(cor(fheight, sheight))
+mean(X) + c(-2,2)*sd(X)
+```
+
+
+
+```{r}
+
+B <- 10^4
+class(R[1,])
+X <- replicate(B, (sample_n( father.son, 250) %>% summarize(cor(fheight, sheight)))[1,] )
+mean(X)
+sd(X)
+father.son %>% summarize(cor(fheight, sheight))
+mean(X) + c(-2,2)*sd(X)
+```
 
 ###Assessment
 
